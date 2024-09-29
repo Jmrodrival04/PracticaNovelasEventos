@@ -1,16 +1,16 @@
+// build.gradle (a nivel de módulo app)
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = "com.example.tester"
-    compileSdk = 34
+    namespace = "com.example.practicanovelaseventos"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.tester"
+        applicationId = "com.example.practicanovelaseventos"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -29,19 +29,25 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
+
     buildFeatures {
+        viewBinding true
         compose = true
     }
+
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.2"
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -50,26 +56,38 @@ android {
 }
 
 dependencies {
-
+    // Core AndroidX Components
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    // Activity and Compose
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // RecyclerView for novel list
+    implementation(libs.androidx.recyclerview)
+
+    // Room for database
+    implementation(libs.androidx.room.ktx) // Room con soporte para Kotlin Coroutines
+    (libs.androidx.room.compiler) // Usa KAPT en lugar de annotationProcessor para Kotlin
+
+    // LiveData y ViewModel
+    implementation(libs.androidx.lifecycle.livedata.ktx) // LiveData con soporte para Kotlin
+    implementation(libs.androidx.lifecycle.viewmodel.ktx) // ViewModel con soporte para Kotlin
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate) // ViewModel con estado guardado (SavedStateHandle)
+
+    // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // Debug dependencies
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
-    implementation 'androidx.room:room-runtime:2.3.0'
-    annotationProcessor 'androidx.room:room-compiler:2.3.0'
 }
